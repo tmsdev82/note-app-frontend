@@ -1,4 +1,4 @@
-import { TestData } from '../models/TestData';
+import { NoteData } from '../models/NoteData';
 
 class BackendService {
   private baseURL: string;
@@ -7,13 +7,13 @@ class BackendService {
     this.baseURL = baseURL;
   }
 
-  public async getTestData(): Promise<TestData> {
+  public async getTestData(): Promise<NoteData> {
     try {
       const response = await fetch(`${this.baseURL}/`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
-      const data: TestData = await response.json();
+      const data: NoteData = await response.json();
       return data;
     } catch (error) {
       throw new Error('Failed to fetch data from the backend');
