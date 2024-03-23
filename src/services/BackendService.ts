@@ -19,6 +19,19 @@ class BackendService {
       throw new Error('Failed to fetch data from the backend');
     }
   }
+
+  public async getNotesData(): Promise<NoteData[]> {
+    try {
+      const response = await fetch(`${this.baseURL}/notes`);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+      const data: NoteData[] = await response.json();
+      return data;
+    } catch (error) {
+      throw new Error('Failed to fetch note data from the backend');
+    }
+  }
 }
 
 export default new BackendService('http://localhost:8000');
