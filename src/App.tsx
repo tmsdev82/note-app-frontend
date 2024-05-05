@@ -7,17 +7,18 @@ function App() {
   const [notesData, setNotesData] = useState<NoteData[]>([]);
   const [newNote, setNewNote] = useState<NoteData>({ title: "", content: "" });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const notes = await BackendService.getNotesData();
-        setNotesData(notes);
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      }
-    };
+  const fetchNotes = async () => {
+    try {
+      const notes = await BackendService.getNotesData();
+      setNotesData(notes);
+    } catch (error) {
+      console.error("Failed to fetch notes:", error);
+    }
+  };
 
-    fetchData();
+
+  useEffect(() => {  
+    fetchNotes();
   }, []);
 
   const handleNoteChange = (
@@ -34,6 +35,7 @@ function App() {
     event.preventDefault();
     await BackendService.postNoteData(newNote);
     setNewNote({ title: '', content: '' }); 
+    await fetchNotes();
   };
 
   return (
@@ -41,7 +43,7 @@ function App() {
       <header>
         <h1>Notes App</h1>
       </header>
-      <div>
+      <section>
         <form onSubmit={handleSubmit}>
           <div>
             <input
@@ -62,7 +64,7 @@ function App() {
           </div>
           <button type="submit">Submit Note</button>
         </form>
-      </div>
+      </section>
       <section>
         <h2>Notes</h2>
         {notesData.length > 0 ? (
@@ -70,7 +72,7 @@ function App() {
             {notesData.map((note, index) => (
               <div key={index} className="note-card">
                 <h3>{note.title}</h3>
-                <p>{note.content}</p>
+                <p>{note.content}</p>               
               </div>
             ))}
           </div>
